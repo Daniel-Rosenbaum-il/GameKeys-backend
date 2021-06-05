@@ -27,7 +27,6 @@ function connectSockets(http, session) {
             }
         })
         socket.on('login', user => {
-            console.log('usersocket',user);
             gSocketByUserIdMap[user._id] = socket
         })
         socket.on('orderSent', (order) => {
