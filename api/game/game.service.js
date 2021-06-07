@@ -20,7 +20,12 @@ async function query(filterBy = { tag: 'all', txt: '' }, sort = { sortby: 'title
     const { sortBy } = sort
     try {
         const collection = await dbService.getCollection('game')
-        var games = await collection.find(filterCriteria, { [sortBy]: 1, _id: 0 }).sort({ [sortBy]: -1 }).toArray()
+        var games
+        if(sortBy === 'title'){
+            games = await collection.find(filterCriteria, { [sortBy]: 1, _id: 0 }).sort({ [sortBy]: 1 }).toArray()
+        }else{
+            games = await collection.find(filterCriteria, { [sortBy]: 1, _id: 0 }).sort({ [sortBy]: -1 }).toArray()
+        }
         // games = games.map(game => {
         //     delete game.password
         //     game.createdAt = ObjectId(game._id).getTimestamp() 
