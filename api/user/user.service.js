@@ -3,6 +3,7 @@ const dbService = require('../../services/db.service')
 const logger = require('../../services/logger.service')
 const reviewService = require('../review/review.service')
 const orderService = require('../order/order.service')
+const gameService = require('../game/game.service')
 const ObjectId = require('mongodb').ObjectId
 
 module.exports = {

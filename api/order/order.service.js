@@ -57,7 +57,8 @@ async function add(order) {
                 _id: ObjectId(game._id),
                 img: game.img,
                 title: game.title,
-                sellerId: game.sellerId
+                sellerId: game.sellerId,
+                serialKey:game.serialKey
 
             },
             createdAt: Date.now(),
