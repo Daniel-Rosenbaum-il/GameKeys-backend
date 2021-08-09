@@ -69,7 +69,7 @@ async function remove(gameId) {
         throw err
     }
 }
-async function update({ title, price, tags, _id, discount, reviews, rating }) {
+async function update({ title, price, tags, _id, discount, reviews, rating, sDescription, description }) {
     console.log('Add function', title, price, tags, _id, discount);
     try {
         // peek only updatable fields!
@@ -81,7 +81,9 @@ async function update({ title, price, tags, _id, discount, reviews, rating }) {
             tags,
             discount,
             updatedAt: Date.now(),
-            reviews
+            reviews,
+            sDescription,
+            description
         }
         const collection = await dbService.getCollection('game')
         await collection.updateOne({ '_id': gameToSave._id }, { $set: gameToSave })
