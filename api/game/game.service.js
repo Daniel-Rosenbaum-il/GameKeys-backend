@@ -17,12 +17,18 @@ module.exports = {
 
 async function query(filterBy = { tag: 'all', txt: '' }, sort = { sortby: 'title' }) { //probably no need
     const filterCriteria = _buildCriteria(filterBy)
-    const { sortBy } = sort
+    let { sortBy } = sort
     try {
         const collection = await dbService.getCollection('game')
         var games
         if(sortBy === 'title'){
             games = await collection.find(filterCriteria, { [sortBy]: 1, _id: 0 }).sort({ [sortBy]: 1 }).toArray()
+        }else if (sortBy=== 'minPrice'){
+            sortBy='price'
+            games = await collection.find(filterCriteria, { [sortBy]: 1, _id: 0 }).sort({ [sortBy]: 1 }).toArray()
+        }else if (sortBy=== 'maxPrice'){
+            sortBy='price'
+            games = await collection.find(filterCriteria, { [sortBy]: 1, _id: 0 }).sort({ [sortBy]: -1 }).toArray()
         }else{
             games = await collection.find(filterCriteria, { [sortBy]: 1, _id: 0 }).sort({ [sortBy]: -1 }).toArray()
         }
@@ -69,7 +75,7 @@ async function remove(gameId) {
         throw err
     }
 }
-async function update({ title, price, tags, _id, discount, reviews, rating, sDescription, description }) {
+async function update({ title, price, tags, _id, discount, reviews, rating, sDescription, description,videoUrls }) {
     console.log('Add function', title, price, tags, _id, discount);
     try {
         // peek only updatable fields!
@@ -83,7 +89,8 @@ async function update({ title, price, tags, _id, discount, reviews, rating, sDes
             updatedAt: Date.now(),
             reviews,
             sDescription,
-            description
+            description,
+            videoUrls
         }
         const collection = await dbService.getCollection('game')
         await collection.updateOne({ '_id': gameToSave._id }, { $set: gameToSave })
