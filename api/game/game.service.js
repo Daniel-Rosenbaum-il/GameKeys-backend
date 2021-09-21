@@ -40,6 +40,7 @@ async function query(filterBy = { tag: 'all', txt: '' }, sort = { sortby: 'title
         //     game.createdAt = Date.now() - (1000 * 60 * 60 * 24 * 3) // 3 days ago
         //     return game
         // })
+        console.log('games',games);
         return games
     } catch (err) {
         logger.error('cannot find games', err)
