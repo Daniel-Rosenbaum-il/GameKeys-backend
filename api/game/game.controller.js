@@ -78,7 +78,7 @@ async function addReview(req, res) {
             txt: req.body.review.txt,
             rate: req.body.review.rate,
             createdAt: Date.now(),
-            byUser: {_id,fullname,imgUrl}
+            byUser: {_id}
         }
         const { gameId } = req.body
         const game = await gameService.addReview(reviewToAdd, gameId)

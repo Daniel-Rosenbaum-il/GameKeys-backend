@@ -1,10 +1,8 @@
-
 const dbService = require('../../services/db.service')
 const logger = require('../../services/logger.service')
-const reviewService = require('../review/review.service')
 const orderService = require('../order/order.service')
-const gameService = require('../game/game.service')
 const ObjectId = require('mongodb').ObjectId
+const cloudinaryService = require('../../services/cloudinary.service')
 
 module.exports = {
     query,
@@ -68,14 +66,20 @@ async function remove(userId) {
     }
 }
 
-async function update({ username, fullname, imgUrl }) {
+async function update({ orders, createdAt, friends, _id, username, fullname, imgUrl }) {
+    const user = getById(_id)
+    const img = (user.imgUrl === imgUrl) ? imgUrl : await cloudinaryService.uploadImgToCloudinary(imgUrl)
     try {
         // peek only updatable fields!
         const userToSave = {
-            _id: ObjectId(user._id),
+            _id: ObjectId(_id),
             username,
             fullname,
-            imgUrl
+            friends,
+            imgUrl:img.url,
+            orders,
+            updatedAt: Date.now(),
+            createdAt
         }
         const collection = await dbService.getCollection('user')
         await collection.updateOne({ '_id': userToSave._id }, { $set: userToSave })

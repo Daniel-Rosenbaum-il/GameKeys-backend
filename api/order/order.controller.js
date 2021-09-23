@@ -41,7 +41,6 @@ async function addOrder(req, res) {
             game: req.body.order.game,
             buyerId:req.body.buyer._id
         } 
-        console.log(order);
         const savedOrder = await orderService.add(order)
         res.send(savedOrder)
         // socketService.broadcast({ type: 'order-updated', data: review, to: savedOrder._id })

@@ -1,7 +1,10 @@
 const userService = require('./user.service')
 const socketService = require('../../services/socket.service')
 const logger = require('../../services/logger.service')
+// const cloudinaryService = require('../../services/cloudinary.service')
 
+
+  
 async function getUser(req, res) {
     try {
         const user = await userService.getById(req.params.id)
@@ -39,7 +42,12 @@ async function deleteUser(req, res) {
 async function updateUser(req, res) {
     try {
         const user = req.body
+        // if (user.imgUrl !== typeof(String)) {
+            // const imgUrl = await cloudinaryService.uploadImg(user.imgUrl)
+            // const imgUrl = await uploadImg(user.imgUrl)
+        // }
         const savedUser = await userService.update(user)
+        // console.log('saveeeeeeeeeeed user', savedUser);
         res.send(savedUser)
         socketService.broadcast({type: 'user-updated', data: review, to:savedUser._id})
     } catch (err) {
