@@ -42,6 +42,7 @@ async function deleteUser(req, res) {
 async function updateUser(req, res) {
     try {
         const user = req.body
+        console.log('req.body', req.body);
         // if (user.imgUrl !== typeof(String)) {
             // const imgUrl = await cloudinaryService.uploadImg(user.imgUrl)
             // const imgUrl = await uploadImg(user.imgUrl)

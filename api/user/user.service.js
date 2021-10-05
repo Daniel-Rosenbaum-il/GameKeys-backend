@@ -3,6 +3,8 @@ const logger = require('../../services/logger.service')
 const orderService = require('../order/order.service')
 const ObjectId = require('mongodb').ObjectId
 const cloudinaryService = require('../../services/cloudinary.service')
+const bcrypt = require('bcrypt')
+
 
 module.exports = {
     query,
@@ -66,9 +68,11 @@ async function remove(userId) {
     }
 }
 
-async function update({ orders, createdAt, friends, _id, username, fullname, imgUrl }) {
+async function update({ orders, createdAt, friends, _id, username, fullname, imgUrl, newPassword }) {
     const user = getById(_id)
     const img = (user.imgUrl === imgUrl) ? imgUrl : await cloudinaryService.uploadImgToCloudinary(imgUrl)
+    const saltRounds = 10
+    console.log('newPassword newPassword newPassword', newPassword);
     try {
         // peek only updatable fields!
         const userToSave = {
@@ -79,10 +83,13 @@ async function update({ orders, createdAt, friends, _id, username, fullname, img
             imgUrl:img.url,
             orders,
             updatedAt: Date.now(),
-            createdAt
+            createdAt,
         }
+        if(newPassword.length > 0) userToSave.password = await bcrypt.hash(newPassword, saltRounds)
+        console.log(userToSave);
         const collection = await dbService.getCollection('user')
         await collection.updateOne({ '_id': userToSave._id }, { $set: userToSave })
+        // userToSave.delete(password)
         return userToSave;
     } catch (err) {
         logger.error(`cannot update user ${user._id}`, err)
@@ -91,6 +98,7 @@ async function update({ orders, createdAt, friends, _id, username, fullname, img
 }
 
 async function add({ username, password, fullname, imgUrl }) {
+    if(!imgUrl) imgUrl = 'https://res.cloudinary.com/dat4toc2t/image/upload/v1633477090/GK/no-image-available-icon_qxycdt.jpg'
     try {
         // peek only updatable fields!
         const userToAdd = {
