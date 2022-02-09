@@ -1,15 +1,15 @@
-GameKeys (Backend)
+# GameKeys (Backend)
 GameKeys is a marketplace application, that allows you to add/buy games, add reviews, manage your profile, and much more. This app was built as my final project in my studies with Alon Dadon at Codingacademy.
 
-Technology:
-Frontend:
+## Technology:
+### Frontend:
 React
 
 Sass
 
 Redux
 
-Backend:
+### Backend:
 Node.js
 
 Express
